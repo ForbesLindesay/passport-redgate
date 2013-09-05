@@ -1,6 +1,6 @@
 {
   "name": "passport-redgate",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "description": "A passport provider for Red Gate ID",
   "keywords": [ "passport", "RedGate", "Red Gate", "red-gate"],
