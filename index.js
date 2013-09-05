@@ -26,7 +26,7 @@ var OpenIDStrategy = require('passport-openid').Strategy;
  *         returnURL: 'http://localhost:3000/auth/Red Gate ID/return',
  *         realm: 'http://localhost:3000/'
  *       },
- *       function(identifier, profile, done) {
+ *       function(identifier, done) {
  *         User.findByOpenID(identifier, function (err, user) {
  *           done(err, user);
  *         });
@@ -40,7 +40,6 @@ var OpenIDStrategy = require('passport-openid').Strategy;
 function Strategy(options, validate) {
   options = options || {};
   options.providerURL = options.providerURL || 'https://authentication.red-gate.com';
-  options.profile =  (options.profile === undefined) ? true : options.profile;
   options.stateless = true;
   OpenIDStrategy.call(this, options, validate);
   this.name = 'redgate';
