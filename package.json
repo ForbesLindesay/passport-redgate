@@ -2,12 +2,21 @@
   "name": "passport-redgate",
   "version": "0.0.1",
   "description": "A passport provider for Red Gate ID",
-  "keywords": [ "passport", "RedGate", "Red Gate", "red-gate"],
+  "keywords": [
+    "passport",
+    "RedGate",
+    "Red Gate",
+    "red-gate"
+  ],
   "dependencies": {
-    "passport-openid": "~0.3.1"
+    "passport-openid": "~0.3.1",
+    "hyperquest": "~0.1.7"
   },
   "devDependencies": {
-    "testit": "~1.1.0"
+    "testit": "~1.1.0",
+    "passport": "~0.1.17",
+    "deviate": "~1.0.0",
+    "express": "~3.3.8"
   },
   "scripts": {
     "test": "node test/index.js"

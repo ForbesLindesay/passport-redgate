@@ -1,6 +1,6 @@
 # passport-redgate
 
-A passport provider for Red Gate ID.
+A passport provider for Red Gate ID.  There is a full working express app in the example directory.
 
 [![Build Status](https://travis-ci.org/ForbesLindesay/passport-redgate.png?branch=master)](https://travis-ci.org/ForbesLindesay/passport-redgate)
 [![Dependency Status](https://gemnasium.com/ForbesLindesay/passport-redgate.png)](https://gemnasium.com/ForbesLindesay/passport-redgate)
@@ -19,10 +19,37 @@ passport.use(new RedGateStrategy({
     returnURL: 'http://localhost:3000/login',
     realm: 'http://localhost:3000/'
   },
-  function(identifier, done) {
-    User.findByOpenID({ openId: identifier }, function (err, user) {
+  function(user, done) {
+    //user has {id: '<guid>', openID: '<uri>'}
+    User.findByOpenID({ openId: user.openID }, function (err, user) {
       return done(err, user);
     });
+  }
+));
+
+
+app.get('/login', passport.authenticate('redgate'), function(req, res){
+  // Successful authentication, redirect home.
+  res.redirect('/');
+});
+```
+
+
+## Example with e-mail
+
+```js
+var RedGateStrategy = require('passport-redgate')
+
+passport.use(new RedGateStrategy({
+    auth: {user: 'username', pass: 'password'},
+    returnURL: 'http://localhost:3000/login',
+    realm: 'http://localhost:3000/'
+  },
+  function(user, done) {
+    //user has {id: '<guid>', openID: '<uri>',
+    //          emailAddress: 'foo@red-gate.com',
+    //          emailAddressConfirmed: true}
+    done(user)
   }
 ));
 

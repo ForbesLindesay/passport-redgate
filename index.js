@@ -1,8 +1,12 @@
 'use strict'
 
-var util = require('util');
-var OpenIDStrategy = require('passport-openid').Strategy;
+var STATUS_CODES = require('http').STATUS_CODES
+var util = require('util')
+var assert = require('assert')
+var OpenIDStrategy = require('passport-openid').Strategy
+var hyperquest = require('hyperquest')
 
+var EMAIL_URL = 'https://authenticationapi.red-gate.com/identity/getfromredgateid?redGateId='
 
 /**
  * `Strategy` constructor.
@@ -18,7 +22,6 @@ var OpenIDStrategy = require('passport-openid').Strategy;
  * Options:
  *   - `returnURL`  URL to which Red Gate ID will redirect the user after authentication
  *   - `realm`      the part of URL-space for which an OpenID authentication request is valid
- *   - `profile`    enable profile exchange, defaults to _true_
  *
  * Examples:
  *
@@ -38,10 +41,42 @@ var OpenIDStrategy = require('passport-openid').Strategy;
  * @api public
  */
 function Strategy(options, validate) {
-  options = options || {};
-  options.providerURL = options.providerURL || 'https://authentication.red-gate.com';
-  options.stateless = true;
-  OpenIDStrategy.call(this, options, validate);
+  options = options || {}
+  options.providerURL = options.providerURL || 'https://authentication.red-gate.com'
+  //RedGate has its own system for "profile" exchange
+  options.profile = false
+  var prefix = options.providerURL + '/openid/user/'
+  OpenIDStrategy.call(this, options, function (uri, done) {
+    assert.equal(uri.substring(0, prefix.length), prefix)
+    var user = {
+      id: uri.substring(prefix.length),
+      openID: uri
+    }
+    if (options.auth) {
+      var url = EMAIL_URL + encodeURIComponent(user.id)
+      var auth = options.auth.user + ':' + options.auth.pass
+      hyperquest(url, {auth: auth}, function (err, res) {
+        if (err) return done(err)
+        var body = ''
+        res.on('data', function (data) {
+          body += data.toString()
+        })
+        .on('end', function () {
+          if (res.statusCode === 200) {
+            user = JSON.parse(body)
+            user.openID = uri
+            validate(user, done)
+          } else {
+            var err = new Error(body || STATUS_CODES[res.statusCode])
+            err.code = (err.statusCode = res.statusCode)
+            done(err)
+          }
+        })
+      })
+    } else {
+      validate(user, done)
+    }
+  });
   this.name = 'redgate';
 }
 
