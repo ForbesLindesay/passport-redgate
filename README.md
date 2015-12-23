@@ -3,8 +3,8 @@
 A passport provider for Red Gate ID.  There is a full working express app in the example directory.
 
 [![Build Status](https://img.shields.io/travis/ForbesLindesay/passport-redgate/master.svg)](https://travis-ci.org/ForbesLindesay/passport-redgate)
-[![Dependency Status](https://img.shields.io/gemnasium/ForbesLindesay/passport-redgate.svg)](https://gemnasium.com/ForbesLindesay/passport-redgate)
-[![NPM version](https://img.shields.io/npm/v/passport-redgate.svg)](http://badge.fury.io/js/passport-redgate)
+[![Dependency Status](https://img.shields.io/david/ForbesLindesay/passport-redgate.svg)](https://david-dm.org/ForbesLindesay/passport-redgate)
+[![NPM version](https://img.shields.io/npm/v/passport-redgate.svg)](https://www.npmjs.com/package/passport-redgate)
 
 ## Installation
 
