@@ -1,5 +1,7 @@
 # passport-redgate
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ForbesLindesay/passport-redgate.svg)](https://greenkeeper.io/)
+
 A passport provider for Red Gate ID.  There is a full working express app in the example directory.
 
 [![Build Status](https://img.shields.io/travis/ForbesLindesay/passport-redgate/master.svg)](https://travis-ci.org/ForbesLindesay/passport-redgate)
